@@ -5,11 +5,13 @@
 
 const {Router} = require('express');
 const router = Router()
-const { getBooks, addBook, editBook, deleteBook } = require('../controllers/books')
+const { getBooks, getBook, addBook, editBook, deleteBook } = require('../controllers/books')
 const {check} = require('express-validator')
 const {validateFields} = require('../middlewares/validate-fields')
 
 router.get('/', getBooks)
+
+router.get('/:id', getBook)
 
 router.post(
     '/new',

@@ -11,6 +11,18 @@ const getBooks = async(req, res = response) => {
 })
 }
 
+const getBook = async(req, res = response) => {
+
+    const bookId = req.params.id
+
+    const book = await Book.findById(bookId)
+
+    res.status(200).json({
+        msg: 'Successfully obtained book',
+        book
+})
+}
+
 const addBook = async(req, res = response) => {
 
     // const { name, description, pages, publicationDate, excerpt, image } = req.body
@@ -90,6 +102,7 @@ const deleteBook = async(req, res = response) => {
 
 module.exports = {
     getBooks,
+    getBook,
     addBook,
     editBook,
     deleteBook
