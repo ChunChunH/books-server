@@ -3,6 +3,8 @@ const { dbConnection } = require('./database/config');
 const cors = require('cors')
 require('dotenv').config();
 
+const auth = require('./routes/auth')
+
 // Crear servidor de express
 const app = express();
 
@@ -19,9 +21,8 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Rutas
+app.use('/api/auth', auth);
 app.use('/api/books', require('./routes/books'));
-// TODO: BOOKS: Traer, Insertar, Editar, Eliminar
-
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
