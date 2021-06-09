@@ -26,18 +26,15 @@ const register = async(req, res = response) => {
         await user.save()
 
         //Generar JWT
-        const token = await generateJWT(user.id, user.name)
+        const token = await generateJWT(user.id, user.name, user.userType)
 
         res.status(201).json({
             ok: true,
             msg: "Successfully registered user!",
             user: {
                 id: user.id,
-                password: user.password,
                 name: user.name,
                 email: user.email,
-                userType: user.userType,
-                token
             }
         })
 
@@ -76,8 +73,10 @@ const login = async(req, res = response) => {
             })
         }
 
+        console.log("USER TYPE", user.userType)
+
         //Generar JWT
-        const token = await generateJWT(user.id, user.name)
+        const token = await generateJWT(user.id, user.name, user.userType)
 
         res.status(200).json({
             ok: true,
@@ -85,7 +84,7 @@ const login = async(req, res = response) => {
             user: {
                 id: user.id,
                 name: user.name,
-                userType: user.userType,
+                email: user.email,
                 token
             }
         })

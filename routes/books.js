@@ -7,11 +7,13 @@ const {Router} = require('express');
 const router = Router()
 const { getBooks, getBook, addBook, editBook, deleteBook } = require('../controllers/books')
 const {check} = require('express-validator')
-const {validateFields} = require('../middlewares/validate-fields')
+const {validateFields} = require('../middlewares/validate-fields');
+const { validateJWT } = require('../middlewares/validate-jwt');
+const { requiredRole } = require('../middlewares/requiredRole');
 
-router.get('/', getBooks)
+router.get('/', validateJWT, getBooks)
 
-router.get('/:id', getBook)
+router.get('/:id', validateJWT, getBook)
 
 router.post(
     '/new',
@@ -22,16 +24,20 @@ router.post(
         check('publicationDate', 'Book publication date is required').not().isEmpty(),
         check('excerpt', 'Book excerpt is required').not().isEmpty(),
         check('image', 'Book image is required').not().isEmpty(),
-        validateFields
+        validateFields,
+        validateJWT,
+        requiredRole('admin')
     ],
     addBook
 )
 
 router.put(
     '/:id',
+    validateJWT,
+    requiredRole('admin'),
     editBook,
 )
 
-router.delete('/:id', deleteBook)
+router.delete('/:id', validateJWT, requiredRole('admin'), deleteBook)
 
 module.exports = router;
