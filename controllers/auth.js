@@ -100,19 +100,21 @@ const login = async(req, res = response) => {
 
 }
 
-
 const tokenRevalidate = async(req, res = response) => {
 
-    const {id, name} = req
+    const {id, name, userType} = req
 
     const token = await generateJWT(id, name)
 
     res.status(200).json({
         ok: true,
         msg: "Token revalidated",
-        token,
-        id,
-        name
+        user: {
+            id,
+            name,
+            userType,
+            token
+        }
     })
 }
 
